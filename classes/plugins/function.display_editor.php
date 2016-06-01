@@ -24,6 +24,31 @@
 function smarty_function_display_editor() 
 {
 global $con;
+
+if ($_GET['type'] == 'page' AND $_GET['action'] == 'created') {
+	
+	echo'<ul class="states">
+		<li class="succes">Success : Your new Page has been created - You will be redirected in 5 seconds.</li>
+	</ul>';
+	
+	//redirect to index page
+				header('refresh:5;url=pages');
+				exit;
+}
+
+elseif ($_GET['type'] == 'post' AND $_GET['action'] == 'created') {
+	
+	echo'<ul class="states">
+		<li class="succes">Success : Your new Post has been created - You will be redirected in 5 seconds.</li>
+	</ul>';
+	
+	//redirect to index page
+				header('refresh:5;url=blogs');
+				exit;
+	
+}
+
+
 if (isset ($_GET['pid'])) {
 
 $pid = $_GET['pid'];
@@ -199,6 +224,7 @@ echo "<script src='//cdn.ckeditor.com/4.5.5/full/ckeditor.js'></script>
 }
 elseif ($_GET['type'] == 'post' AND $_GET['action'] == 'add') {
 global $db;
+ 
 
 	//if form has been submitted process it
 	if(isset($_POST['submit'])){
@@ -244,8 +270,8 @@ global $db;
 					':postSlug' => $seoUrl
 				));
 
-				//redirect to update page
-				header('Location: edit?post_id=postID&amp;action=add');
+				//redirect to success page
+				header('Location: edit?type=post&action=created');
 				exit;
 
 			} catch(PDOException $e) {
@@ -277,7 +303,7 @@ echo "<script src='//cdn.ckeditor.com/4.5.5/full/ckeditor.js'></script>
 		<p><label>Content</label><br />
 		<textarea class='ckeditor' name='postCont' cols='60' rows='10'>".$row['postCont']."</textarea></p>
 
-		<p><input type='submit' name='submit' value='Update'></p>
+		<p><input type='submit' name='submit' value='Create'></p>
 
 	</form></div></div>" ;
 
@@ -331,8 +357,8 @@ global $db;
 					':user' => $_SESSION["user_name"],
 				));
 
-				//redirect to index page
-				header('Location: edit?action=add&amp;type=page');
+				//redirect to success page
+				header('Location: edit?type=page&action=created');
 				exit;
 
 			} catch(PDOException $e) {

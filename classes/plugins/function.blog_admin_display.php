@@ -23,7 +23,14 @@
 function smarty_function_blog_admin_display()
 {
 global $db;
+if(isset($_GET['delpost'])){ 
 
+    $stmt = $db->prepare('DELETE FROM blog_posts WHERE postID = :postID') ;
+    $stmt->execute(array(':postID' => $_GET['delpost']));
+
+    header('Location: blogs?action=deleted');
+    exit;
+} 
 print '<table>
 <tr>
 	<th>ID</th>

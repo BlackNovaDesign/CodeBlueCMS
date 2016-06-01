@@ -664,3 +664,6 @@ background: #f5f5f5;
 
 span.edit-ico { background: url("../img/icons/edit-ico.png") no-repeat 0 center;  height: 16px; display: block;}
 span.del-ico { background: url("../img/icons/del-ico.png") no-repeat 0 center;  height: 16px; display: block;}
+
+/*MISC*/
+.spacer {padding:20px;}

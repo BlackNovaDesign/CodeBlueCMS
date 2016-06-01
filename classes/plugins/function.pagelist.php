@@ -23,6 +23,14 @@
 function smarty_function_PageList()
 {
 global $db;
+if(isset($_GET['delpage'])){ 
+
+    $stmt = $db->prepare('DELETE FROM core_content_pages WHERE id = :ID') ;
+    $stmt->execute(array(':ID' => $_GET['delpage']));
+
+    header('Location: pages?action=deleted');
+    exit;
+} 
 
 	try {
 
@@ -33,18 +41,20 @@ echo '<table width="100%" border="1"><tbody><th class="check"></th><th>Page Titl
 <?php 
 	$_SERVER["PHP_SELF"]; echo'">';
 		while($row = $stmt->fetch()){
-			$title = $row['title'];
-			$label = $row['label'];
-			$order = $row['page_order'];
-			$lastmod = $row['lastmodified'];
-			$lastuser = $row['lastuser'];
-			$pid = $row['id'];
 			if ($row['active'] == '1') 
 			{ $live = 'Live';}
 			else 
 			{ $live = 'Draft'; }
 ?>
-		<tr><td><input type="checkbox" value="<?php echo $pid; ?>" /></td><td align='center'><?php print $title; ?></td><td align='center'><?php print $label; ?></td><td align='center'><?php print $order; ?></td><td align='center'><?php print $live; ?></td><td align='center'><? print $lastmod;?> by <? print $lastuser; ?></td><td align='center'><a href="edit?action=change&amp;pid=<?php echo $pid ?>" title="Edit" ><span class="edit-ico"></span></a></td><td align='center'><a id="demo" href="edit?action=delete&amp;pid=<?php echo $pid ?>" onclick="return confirm('Are you sure you want to delete this page?')" title="Delete"><span class="del-ico"></span></a></td></tr>
+		<tr>
+		<td><input type="checkbox" value="<?php echo $pid; ?>" /></td>
+		<td align='center'><?php echo $row['title'];?></td>
+		<td align='center'><?php echo $row['label'];?></td>
+		<td align='center'><?php echo $row['order'];?></td>
+		<td align='center'><?php print $live; ?></td>
+		<td align='center'><?php echo $row['lastmodified'];?> by <?php echo $row['lastuser'];?></td>
+		<td align='center'><a href="edit?pid=<?php echo $row['id'];?>" title="Edit" ><span class="edit-ico"></span></a></td>
+		<td align='center'><a href="javascript:delpage('<?php echo $row['id'];?>','<?php echo $row['title'];?>')"><span class="del-ico"></span></a></td></tr>
 <?php
 };
 	}catch(PDOException $e) {

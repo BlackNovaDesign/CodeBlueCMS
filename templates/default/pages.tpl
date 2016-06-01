@@ -7,7 +7,15 @@
 			</div>
 			<p class="text-indent"><a href="edit?action=add&amp;type=page" class="button1">Create New Page</a></p>
 			{pagelist}
-
+<script language="JavaScript" type="text/javascript">
+function delpage(id, title)
+{
+  if (confirm("Are you sure you want to delete '" + title + "'"))
+  {
+      window.location.href = 'pages?delpage=' + id;
+  }
+}
+</script>
 		</article>
 	</div>
 </div>
